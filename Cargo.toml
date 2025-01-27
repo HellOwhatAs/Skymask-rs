@@ -1,0 +1,11 @@
+[package]
+name = "rust_reader"
+version = "0.1.0"
+edition = "2021"
+
+[dependencies]
+shapefile = "0.6.0"
+ndarray = "0.16.1"
+ordered-float = "4.6.0"
+kdtree = "0.7.0"
+rayon = "1.10.0"
