@@ -212,6 +212,7 @@ version = "0.1.0"
 dependencies = [
  "kdtree",
  "ndarray",
+ "num-traits",
  "ordered-float",
  "rayon",
  "shapefile",
