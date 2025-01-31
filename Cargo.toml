@@ -2,6 +2,8 @@
 name = "skymask-rs"
 version = "0.1.0"
 edition = "2021"
+description = "Compute piecewise analytical solutions of skymask for given polyhedra"
+license = "MIT"
 
 [dependencies]
 shapefile = "0.6.0"
