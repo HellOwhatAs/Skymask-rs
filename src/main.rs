@@ -9,7 +9,6 @@ use std::collections::BinaryHeap;
 use std::fmt::Debug;
 use utils::{ProjLine, ProjSegment};
 
-#[inline]
 fn float_cmp<T: Float + Ord>(a: T, b: T, eps: T) -> std::cmp::Ordering {
     if (a - b).abs() < eps {
         std::cmp::Ordering::Equal
@@ -31,31 +30,30 @@ where
             let mut updates = vec![];
             for (seg_dom, seg_func) in rmap.overlapping(dom_s..dom_e) {
                 use std::cmp::{max, min, Ordering::*};
-                let dom = (max(dom_s, seg_dom.start), min(dom_e, seg_dom.end));
+                let dom = max(dom_s, seg_dom.start)..min(dom_e, seg_dom.end);
                 match (
-                    float_cmp(l.line.at(dom.0), seg_func.at(dom.0), eps),
-                    float_cmp(l.line.at(dom.1), seg_func.at(dom.1), eps),
+                    float_cmp(l.line.at(dom.start), seg_func.at(dom.start), eps),
+                    float_cmp(l.line.at(dom.end), seg_func.at(dom.end), eps),
                 ) {
                     (Less | Equal, Less | Equal) => {}
                     (Greater | Equal, Greater | Equal) => {
                         updates.push((dom, l.line));
                     }
                     (Less, Greater) => {
-                        let cross = l.line.cross_point(seg_func, dom).unwrap();
-                        updates.push(((cross, dom.1), l.line));
+                        let cross = l.line.cross_point(seg_func, &dom).unwrap();
+                        updates.push((cross..dom.end, l.line));
                     }
                     (Greater, Less) => {
-                        let cross = l.line.cross_point(seg_func, dom).unwrap();
-                        updates.push(((dom.0, cross), l.line));
+                        let cross = l.line.cross_point(seg_func, &dom).unwrap();
+                        updates.push((dom.start..cross, l.line));
                     }
                 }
             }
-            if updates.is_empty() {
-                updates.push(((dom_s, dom_e), l.line));
+            for gap in rmap.gaps(&(dom_s..dom_e)) {
+                updates.push((gap, l.line));
             }
-            updates.into_iter().for_each(|((dom_s, dom_e), func)| {
-                let range = dom_s..dom_e;
-                rmap.insert(range, func);
+            updates.into_iter().for_each(|(dom, func)| {
+                rmap.insert(dom, func);
             });
         }
     }
@@ -72,7 +70,7 @@ fn main() {
         xy[1].iter().sum::<f64>() / xy[1].len() as f64,
     ];
 
-    let idx = 0;
+    let idx = -8;
     let pos = [pos[0] + 0.5 * idx as f64, pos[1] + 0.5 * idx as f64];
     let lines_iter = kdtree
         .within(&pos, max_dist.powi(2), &squared_euclidean)
@@ -85,5 +83,11 @@ fn main() {
                 &[F(row[3] - pos[0]), F(row[4] - pos[1]), F(row[5])],
             )
         });
-    println!("{:?}", skymask(lines_iter, F(1e-6)));
+    println!(
+        "{:?}",
+        skymask(lines_iter, F(1e-6))
+            .into_iter()
+            .map(|(r, f)| ((r.start, r.end), f))
+            .collect::<Vec<_>>()
+    );
 }

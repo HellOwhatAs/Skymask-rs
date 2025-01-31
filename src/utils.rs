@@ -3,6 +3,7 @@ use num_traits::FloatConst;
 use std::{
     cmp::{Eq, Ord, Ordering, PartialEq, PartialOrd},
     fmt::Debug,
+    ops::Range,
 };
 
 pub trait ProjLine<T>: Eq + Copy
@@ -11,7 +12,7 @@ where
 {
     fn from_points(p1: &[T; 3], p2: &[T; 3]) -> Option<Self>;
     fn at(&self, theta: T) -> T;
-    fn cross_point(&self, other: &Self, dom: (T, T)) -> Option<T>;
+    fn cross_point(&self, other: &Self, dom: &Range<T>) -> Option<T>;
 }
 
 impl<T: Copy + Float + FloatConst + Eq + Debug> ProjLine<T> for (T, T) {
@@ -29,13 +30,13 @@ impl<T: Copy + Float + FloatConst + Eq + Debug> ProjLine<T> for (T, T) {
     fn at(&self, theta: T) -> T {
         (self.0 * theta.cos() + self.1 * theta.sin()).atan()
     }
-    fn cross_point(&self, other: &Self, dom: (T, T)) -> Option<T> {
+    fn cross_point(&self, other: &Self, dom: &Range<T>) -> Option<T> {
         let cross = ((self.0 - other.0) / (other.1 - self.1)).atan();
-        if cross > dom.0 && cross < dom.1 {
+        if cross > dom.start && cross < dom.end {
             Some(cross)
         } else {
             let cross = cross - T::signum(cross) * T::PI();
-            if cross > dom.0 && cross < dom.1 {
+            if cross > dom.start && cross < dom.end {
                 Some(cross)
             } else {
                 None
