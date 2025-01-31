@@ -5,15 +5,16 @@ use std::{
     fmt::Debug,
 };
 
-pub trait ProjLine<T>
+pub trait ProjLine<T>: Eq + Copy
 where
     Self: Sized,
 {
     fn from_points(p1: &[T; 3], p2: &[T; 3]) -> Option<Self>;
     fn at(&self, theta: T) -> T;
+    fn cross_point(&self, other: &Self, dom: (T, T)) -> Option<T>;
 }
 
-impl<T: Copy + Float> ProjLine<T> for (T, T) {
+impl<T: Copy + Float + FloatConst + Eq + Debug> ProjLine<T> for (T, T) {
     fn from_points(p1: &[T; 3], p2: &[T; 3]) -> Option<(T, T)> {
         let denominator = p2[0] * p1[1] - p1[0] * p2[1];
         if denominator == T::zero() {
@@ -27,6 +28,19 @@ impl<T: Copy + Float> ProjLine<T> for (T, T) {
     }
     fn at(&self, theta: T) -> T {
         (self.0 * theta.cos() + self.1 * theta.sin()).atan()
+    }
+    fn cross_point(&self, other: &Self, dom: (T, T)) -> Option<T> {
+        let cross = ((self.0 - other.0) / (other.1 - self.1)).atan();
+        if cross > dom.0 && cross < dom.1 {
+            Some(cross)
+        } else {
+            let cross = cross - T::signum(cross) * T::PI();
+            if cross > dom.0 && cross < dom.1 {
+                Some(cross)
+            } else {
+                None
+            }
+        }
     }
 }
 
@@ -64,27 +78,8 @@ where
         let line = LT::from_points(p1, p2)?;
         Self::new(line, (p1[1].atan2(p1[0]), p2[1].atan2(p2[0])))
     }
-    pub fn at(&self, theta: T) -> Option<T> {
-        if self.in_domain(theta) {
-            Some(self.line.at(theta))
-        } else {
-            None
-        }
-    }
-    pub fn in_domain(&self, theta: T) -> bool {
-        theta.abs() <= T::PI()
-            && (if self.dom.0 < self.dom.1 {
-                theta >= self.dom.0 && theta <= self.dom.1
-            } else {
-                theta <= self.dom.0 || theta >= self.dom.1
-            })
-    }
     pub fn top_endpoint(&self) -> T {
-        [self.dom.0, self.dom.1, T::PI()]
-            .into_iter()
-            .filter_map(|theta| self.at(theta))
-            .max()
-            .unwrap()
+        Float::max(self.line.at(self.dom.0), self.line.at(self.dom.1))
     }
 }
 
