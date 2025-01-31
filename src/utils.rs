@@ -6,6 +6,14 @@ use std::{
     ops::Range,
 };
 
+pub fn float_cmp<T: Float + Ord>(a: T, b: T, eps: T) -> std::cmp::Ordering {
+    if (a - b).abs() < eps {
+        std::cmp::Ordering::Equal
+    } else {
+        a.cmp(&b)
+    }
+}
+
 pub trait ProjLine<T>: Eq + Copy
 where
     Self: Sized,

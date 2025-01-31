@@ -213,19 +213,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "rust_reader"
-version = "0.1.0"
-dependencies = [
- "kdtree",
- "ndarray",
- "num-traits",
- "ordered-float",
- "rangemap",
- "rayon",
- "shapefile",
-]
-
-[[package]]
 name = "serde"
 version = "1.0.217"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -253,6 +240,19 @@ checksum = "79d5472e932503059d02779ad2c1b96258980940c6923e49f427fbe80eb3053c"
 dependencies = [
  "byteorder",
  "dbase",
+]
+
+[[package]]
+name = "skymask-rs"
+version = "0.1.0"
+dependencies = [
+ "kdtree",
+ "ndarray",
+ "num-traits",
+ "ordered-float",
+ "rangemap",
+ "rayon",
+ "shapefile",
 ]
 
 [[package]]
