@@ -6,20 +6,27 @@ use std::{
     ops::Range,
 };
 
-pub fn float_cmp<T: Float + Ord>(a: T, b: T, eps: T) -> std::cmp::Ordering {
+pub fn float_cmp<T: Float + Ord>(a: T, b: T, eps: T) -> Ordering {
     if (a - b).abs() < eps {
-        std::cmp::Ordering::Equal
+        Ordering::Equal
     } else {
         a.cmp(&b)
     }
 }
 
+/// Infinite projection of a line segment in space onto the target coordinate axis.
+/// <div class="warning">
+/// Ensure that the projections of two line segments on the domain have at most one intersection point.
+/// </div>
 pub trait ProjLine<T>: Eq + Copy
 where
     Self: Sized,
 {
+    /// Creates an instance from two points.
     fn from_points(p1: &[T; 3], p2: &[T; 3]) -> Option<Self>;
+    /// Calculates a value at a given angle `theta`.
     fn at(&self, theta: T) -> T;
+    /// Calculates the intersection point with another instance within a given domain.
     fn cross_point(&self, other: &Self, dom: &Range<T>) -> Option<T>;
 }
 
@@ -53,6 +60,11 @@ impl<T: Copy + Float + FloatConst + Eq + Debug> ProjLine<T> for (T, T) {
     }
 }
 
+/// A `ProjLine` with domain on `[-pi, pi)`.  
+/// The comparison of this struct is based on the maximum value at its endpoints.  
+/// Which is the result of `Self::top_endpoint`.  
+/// If `dom.0 < dom.1`, the domain is `[dom.0, dom.1)`.  
+/// If `dom.0 > dom.1`, the domain is `[dom.0, pi)` and `[-pi, dom.1)`.  
 #[derive(Debug)]
 pub struct ProjSegment<T, LT>
 where
@@ -68,6 +80,7 @@ where
     T: Copy + Float + FloatConst + Ord + Debug,
     LT: ProjLine<T>,
 {
+    /// Will return None if the two endpoints of `dom` are symmetric relative to the origin.
     pub fn new(line: LT, dom: (T, T)) -> Option<Self> {
         let delta = (dom.0 - dom.1).abs();
         if delta % T::PI() == T::zero() {
@@ -83,10 +96,12 @@ where
             dom: if swap { (dom.1, dom.0) } else { dom },
         })
     }
+    /// Constructing a projection segment from the two endpoints of a line segment.
     pub fn from_points(p1: &[T; 3], p2: &[T; 3]) -> Option<Self> {
         let line = LT::from_points(p1, p2)?;
         Self::new(line, (p1[1].atan2(p1[0]), p2[1].atan2(p2[0])))
     }
+    /// The maximum angle of elevation of the endpoints.
     pub fn top_endpoint(&self) -> T {
         Float::max(self.line.at(self.dom.0), self.line.at(self.dom.1))
     }

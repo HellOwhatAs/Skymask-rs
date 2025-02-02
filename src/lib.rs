@@ -1,12 +1,26 @@
+#![doc = include_str!("../README.md")]
 pub mod data;
 pub mod utils;
+pub use data::read_shp;
 use num_traits::{Float, FloatConst};
-use rangemap::RangeMap;
+pub use rangemap::RangeMap;
 use std::cmp::{max, min, Ordering::*};
 use std::collections::BinaryHeap;
 use std::fmt::Debug;
-use utils::{float_cmp, ProjLine, ProjSegment};
+use utils::float_cmp;
+pub use utils::{ProjLine, ProjSegment};
 
+/// Computes the skymask from a set of projected segments.  
+/// This function takes an iterator of projected segments and an epsilon value for floating-point comparisons.  
+/// It returns a `RangeMap` that represents the skymask with dom `[-pi, pi)`.
+/// ## Type Parameters
+/// - `T`: The numeric type used for coordinates.
+/// - `LT`: The line type used for projections.
+/// ## Parameters
+/// - `lines`: An iterator over `ProjSegment<T, LT>` items representing the projected segments.
+/// - `eps`: A tolerance value for floating-point comparisons.
+/// ## Returns
+/// A `RangeMap<T, LT>` representing the skymask with dom `[-pi, pi)`.
 pub fn skymask<T, LT>(lines: impl Iterator<Item = ProjSegment<T, LT>>, eps: T) -> RangeMap<T, LT>
 where
     T: Copy + Float + FloatConst + Ord + Debug,

@@ -1,7 +1,7 @@
 use kdtree::distance::squared_euclidean;
 use ordered_float::OrderedFloat as F;
-use skymask_rs::data::read_shp;
-use skymask_rs::utils::ProjSegment;
+use skymask_rs::read_shp;
+use skymask_rs::ProjSegment;
 
 fn main() {
     let path = "../Skymask/local/Shanghai/Shanghai_Buildings_DWG-Polygon.shp";
