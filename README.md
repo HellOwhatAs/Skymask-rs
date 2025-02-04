@@ -7,7 +7,8 @@
 <p align="center">
     <a href="https://crates.io/crates/skymask-rs"><img src="https://img.shields.io/crates/v/skymask-rs" alt="crates.io"></a>
     <a href="https://docs.rs/skymask-rs/"><img src="https://docs.rs/skymask-rs/badge.svg" alt="docs"></a>
-    <a href="https://github.com/HellOwhatAs/skymask-rs/"><img src="https://img.shields.io/github/repo-size/HellOwhatAs/skymask-rs" alt="repo"></a>
+    <a href="https://pypi.org/project/skymask-py/"><img src="https://img.shields.io/pypi/v/skymask-py"/></a>
+    <a href="https://github.com/HellOwhatAs/skymask-rs/"><img src="https://img.shields.io/github/repo-size/HellOwhatAs/skymask-rs"></a>
 </p>
 
 
