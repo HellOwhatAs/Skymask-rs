@@ -23,8 +23,8 @@ The obtained analytical solution is a `RangeMap`, therefore the time complexity 
 
 <p align="center">O(𝑚 · log 𝑟)</p>
 
-> Where $n$ represents the number of line segments, and $k$ denotes the average number of segments each line overlaps with in the analytical result.
-> $r$ denotes the number of segments in the analytical result, and $m$ refers to the number of discrete sample points taken from the skymask.  
+> Where 𝑛 represents the number of line segments, and 𝑘 denotes the average number of segments each line overlaps with in the analytical result.
+> 𝑟 denotes the number of segments in the analytical result, and 𝑚 refers to the number of discrete sample points taken from the skymask.  
 
 ## Benchmark
 Runs on 11th Gen Intel(R) Core(TM) i7-11800H @ 2.30GHz (8 Physical Cores / 16 Logical Threads) and NVIDIA GeForce RTX 3070 Laptop GPU.
