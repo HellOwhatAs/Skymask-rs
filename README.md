@@ -7,13 +7,12 @@ This crate uses an efficient algorithm to compute the piecewise analytical solut
 
 $$ O(k \cdot \log r \cdot n \log n) $$  
 
-Where $n$ represents the number of line segments, and $k$ denotes the average number of segments each line overlaps with in the analytical result.  
-
 The obtained analytical solution is a `RangeMap`, therefore the time complexity for sampling skymask is  
 
 $$ O(m \cdot \log r) $$  
 
-Where $r$ denotes the number of segments in the analytical result, and $m$ refers to the number of discrete sample points taken from the skymask.  
+> Where $n$ represents the number of line segments, and $k$ denotes the average number of segments each line overlaps with in the analytical result.
+> $r$ denotes the number of segments in the analytical result, and $m$ refers to the number of discrete sample points taken from the skymask.  
 
 ## Benchmark
 Runs on 11th Gen Intel(R) Core(TM) i7-11800H @ 2.30GHz (8 Physical Cores / 16 Logical Threads) and NVIDIA GeForce RTX 3070 Laptop GPU.
@@ -21,10 +20,10 @@ The benchmark code is available at [benchmark.py](https://github.com/HellOwhatAs
 
 |Method|Fps|Time Complexity|
 |-|-|-|
-|Parallel sampling in [`skymask_py`](https://github.com/HellOwhatAs/skymask-py)|1648.87|$O((k \cdot n \log n + m) \cdot \log r)$|
-|Sequential sampling in [`skymask_py`](https://github.com/HellOwhatAs/skymask-py)|176.05|$O((k \cdot n \log n + m) \cdot \log r)$|
-|[Naive approach](https://github.com/HellOwhatAs/Skymask/blob/main/skymask.py) with Cupy|63.40|$O(m \cdot n)$|
-|[Naive approach](https://github.com/HellOwhatAs/Skymask/blob/main/skymask.py) with Numpy|5.44|$O(m \cdot n)$|
+|Parallel sampling in [`skymask_py`](https://github.com/HellOwhatAs/skymask-py)|1743.54|$O((k \cdot n \log n + m) \cdot \log r)$|
+|Sequential sampling in [`skymask_py`](https://github.com/HellOwhatAs/skymask-py)|187.77|$O((k \cdot n \log n + m) \cdot \log r)$|
+|[Naive approach](https://github.com/HellOwhatAs/Skymask/blob/main/skymask.py) with Cupy|84.98|$O(m \cdot n)$|
+|[Naive approach](https://github.com/HellOwhatAs/Skymask/blob/main/skymask.py) with Numpy|4.91|$O(m \cdot n)$|
 
 ## Install
 ```toml
