@@ -17,11 +17,11 @@ Compute piecewise analytical solutions of skymask for given polyhedra.
 ## Time Complexity
 This crate uses an efficient algorithm to compute the piecewise analytical solution of skymask. Its time complexity is  
 
-$$ O(k \cdot \log r \cdot n \log n) $$  
+<p align="center">O(𝑘 · log 𝑟 · 𝑛 log 𝑛)</p>
 
 The obtained analytical solution is a `RangeMap`, therefore the time complexity for sampling skymask is  
 
-$$ O(m \cdot \log r) $$  
+<p align="center">O(𝑚 · log 𝑟)</p>
 
 > Where $n$ represents the number of line segments, and $k$ denotes the average number of segments each line overlaps with in the analytical result.
 > $r$ denotes the number of segments in the analytical result, and $m$ refers to the number of discrete sample points taken from the skymask.  
@@ -32,10 +32,10 @@ The benchmark code is available at [benchmark.py](https://github.com/HellOwhatAs
 
 |Method|Fps|Time Complexity|
 |-|-|-|
-|Parallel sampling in [`skymask_py`](https://github.com/HellOwhatAs/skymask-py)|1743.54|$O((k \cdot n \log n + m) \cdot \log r)$|
-|Sequential sampling in [`skymask_py`](https://github.com/HellOwhatAs/skymask-py)|187.77|$O((k \cdot n \log n + m) \cdot \log r)$|
-|[Naive approach](https://github.com/HellOwhatAs/Skymask/blob/main/skymask.py) with Cupy|84.98|$O(m \cdot n)$|
-|[Naive approach](https://github.com/HellOwhatAs/Skymask/blob/main/skymask.py) with Numpy|4.91|$O(m \cdot n)$|
+|Parallel sampling in [`skymask_py`](https://github.com/HellOwhatAs/skymask-py)|1743.54|O((𝑘 · 𝑛 log 𝑛 + 𝑚) · log 𝑟)|
+|Sequential sampling in [`skymask_py`](https://github.com/HellOwhatAs/skymask-py)|187.77|O((𝑘 · 𝑛 log 𝑛 + 𝑚) · log 𝑟)|
+|[Naive approach](https://github.com/HellOwhatAs/Skymask/blob/main/skymask.py) with Cupy|84.98|O(𝑚 · 𝑛)|
+|[Naive approach](https://github.com/HellOwhatAs/Skymask/blob/main/skymask.py) with Numpy|4.91|O(𝑚 · 𝑛)|
 
 ## Install
 ```toml
