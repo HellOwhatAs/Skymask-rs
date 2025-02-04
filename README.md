@@ -19,7 +19,7 @@ This crate uses an efficient algorithm to compute the piecewise analytical solut
 
 <p align="center">O(𝑘 · log 𝑟 · 𝑛 log 𝑛)</p>
 
-The obtained analytical solution is a `RangeMap`, therefore the time complexity for sampling skymask is  
+The obtained analytical solution is a [`RangeMap`](https://crates.io/crates/rangemap), therefore the time complexity for sampling skymask is  
 
 <p align="center">O(𝑚 · log 𝑟)</p>
 
@@ -30,7 +30,7 @@ The obtained analytical solution is a `RangeMap`, therefore the time complexity 
 Runs on 11th Gen Intel(R) Core(TM) i7-11800H @ 2.30GHz (8 Physical Cores / 16 Logical Threads) and NVIDIA GeForce RTX 3070 Laptop GPU.
 The benchmark code is available at [benchmark.py](https://github.com/HellOwhatAs/Skymask/blob/main/benchmark.py).
 
-|Method|Fps|Time Complexity|
+|Method|FPS|Time Complexity|
 |-|-|-|
 |Parallel sampling in [`skymask_py`](https://github.com/HellOwhatAs/skymask-py)|1743.54|O((𝑘 · 𝑛 log 𝑛 + 𝑚) · log 𝑟)|
 |Sequential sampling in [`skymask_py`](https://github.com/HellOwhatAs/skymask-py)|187.77|O((𝑘 · 𝑛 log 𝑛 + 𝑚) · log 𝑟)|
